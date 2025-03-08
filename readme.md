@@ -67,6 +67,8 @@ The above code overlays the image with a glow effect at 80% intensity using a bl
 
 GlowGetter uses a Metal layer behind the scenes to produce a glow effect by blending a rendered overlay with the underlying view content. The overlay is applied using a custom SwiftUI view (`GlowRenderView`), which is wrapped up inside a neat `.glow(_:)` modifier. This allows you to add or remove the effect in a declarative manner.
 
+> This implementation serves as a quick way to achieve a glow effect using a SwiftUI overlay. It may not be the most ideal method for high-performance or production-quality rendering. For optimal results in demanding scenarios, a more robust Metal-based rendering pipeline is recommended.
+
 ---
 
 ## **Acknowledgments**
