@@ -15,6 +15,23 @@
 
 GlowGetter provides an easy-to-use SwiftUI modifier that overlays a view with a Metal-powered glow effect. With just one simple modifier, you can enhance your views with a subtle or pronounced glow to match your design needs. Under the hood, the package leverages a custom view (named `GlowRenderView`) that encapsulates Metal's powerful rendering functionalities.
 
+### **Examples**
+
+Here are some examples of GlowGetter in action:
+
+<div align="center">
+<table>
+  <tr>
+    <td align="center">
+      <img src="assets/example1.jpg" alt="Example 1" width="300">
+    </td>
+    <td align="center">
+      <img src="assets/example2.jpg" alt="Example 2" width="300">
+    </td>
+  </tr>
+</table>
+</div>
+
 **Please Note:**  
 The current implementation of GlowGetter is experimental. We acknowledge that the rendering method isn’t perfect yet, and improvements are planned for possible future releases.
 
