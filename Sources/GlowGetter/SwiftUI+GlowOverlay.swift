@@ -62,6 +62,7 @@ public struct GlowGetterExampleView: View {
                         RoundedRectangle(cornerRadius: 15)
                             .fill(Color.orange)
                             .glow(example1GlowIntensity)
+                            .clipShape(.rect(cornerRadius: 15))
                     }
                     .frame(height: 80)
 
@@ -81,6 +82,7 @@ public struct GlowGetterExampleView: View {
                         Circle()
                             .fill(Color.red)
                             .glow(example2GlowIntensity)
+                            .clipShape(Circle())
                     }
                     .frame(height: 80)
 
@@ -99,14 +101,14 @@ public struct GlowGetterExampleView: View {
                             .padding()
                             .background(Color.purple)
                             .foregroundColor(.white)
-                            .cornerRadius(10)
+                            .clipShape(.rect(cornerRadius: 15))
 
                         Text("Glowing Text")
                             .padding()
                             .background(Color.purple)
                             .foregroundColor(.white)
-                            .cornerRadius(10)
                             .glow(example3GlowIntensity)
+                            .clipShape(.rect(cornerRadius: 15))
                     }
 
                     Slider(value: $example3GlowIntensity, in: 0...1, step: 0.1)
