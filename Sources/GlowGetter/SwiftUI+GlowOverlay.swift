@@ -121,3 +121,15 @@ public struct GlowGetterExampleView: View {
     }
 }
 
+
+struct RoundedGlowContentView: View {
+    var body: some View {
+        Color.orange
+            .clipShape(.rect(cornerRadius: 15))
+            .glow(0.8, .rect(cornerRadius: 15))
+    }
+}
+
+
+
+
