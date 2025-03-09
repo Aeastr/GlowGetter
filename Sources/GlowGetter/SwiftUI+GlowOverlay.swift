@@ -11,18 +11,30 @@ public extension View {
     /// Overlays the view with a glow effect.
     ///
     /// - Parameters:
-    ///   - opacity: The opacity of the glow effect (default: `1.0`).
+    ///   - intensity: The intensity of the glow effect (default: `1.0`).
+    ///   - clipShape: An optional shape used to clip the glow (default: `nil`).
     /// - Returns: A view modified with a glow effect overlay.
-    public func glow(
-        _ intensity: Double = 1.0
+    func glow(
+        _ intensity: Double = 1.0,
+        _ clipShape: (any Shape)? = nil
     ) -> some View {
-        self.overlay {
-            GlowRenderView()
-                .blendMode(.multiply)
-                .opacity(intensity)
-        }
+        let glowView = GlowRenderView()
+            .blendMode(.multiply)
+            .opacity(intensity)
+
+        return self.overlay(content: {
+            if let clipShape = clipShape {
+                AnyView(glowView.clipShape(clipShape))
+            } else {
+                AnyView(glowView)
+            }
+        })
     }
 }
+
+
+
+
 
 // You cannot view this in regular previews or sim, you can use 'My Mac | Mac Catalyst', if your mac supports HDR to view it
 
@@ -34,9 +46,9 @@ public struct GlowGetterExampleView: View {
     @State private var example1GlowIntensity = 0.4
     @State private var example2GlowIntensity = 0.6
     @State private var example3GlowIntensity = 0.8
-
+    
     public init() {}
-
+    
     public var body: some View {
         ScrollView {
             VStack(spacing: 15) {
@@ -46,16 +58,16 @@ public struct GlowGetterExampleView: View {
                 .font(.caption2)
                 .opacity(0.5)
                 .padding(.top, 15)
-
+                
                 Divider()
                     .opacity(0.8)
                     .padding(.horizontal, 15)
-
+                
                 // Example 1: Rounded Rectangles
                 VStack(spacing: 12) {
                     Text("Example 1")
                         .frame(maxWidth: .infinity, alignment: .leading)
-
+                    
                     HStack {
                         RoundedRectangle(cornerRadius: 15)
                             .fill(Color.orange)
@@ -65,17 +77,17 @@ public struct GlowGetterExampleView: View {
                             .clipShape(.rect(cornerRadius: 15))
                     }
                     .frame(height: 80)
-
+                    
                     Slider(value: $example1GlowIntensity, in: 0...1, step: 0.1)
                         .padding(.horizontal, 15)
                 }
                 .padding(.vertical, 8)
-
+                
                 // Example 2: Circles
                 VStack(spacing: 12) {
                     Text("Example 2")
                         .frame(maxWidth: .infinity, alignment: .leading)
-
+                    
                     HStack {
                         Circle()
                             .fill(Color.red)
@@ -85,32 +97,31 @@ public struct GlowGetterExampleView: View {
                             .clipShape(Circle())
                     }
                     .frame(height: 80)
-
+                    
                     Slider(value: $example2GlowIntensity, in: 0...1, step: 0.1)
                         .padding(.horizontal, 15)
                 }
                 .padding(.vertical, 8)
-
+                
                 // Example 3: Text Blocks
                 VStack(spacing: 12) {
                     Text("Example 3")
                         .frame(maxWidth: .infinity, alignment: .leading)
-
+                    
                     VStack(spacing: 10) {
                         Text("Normal Text")
                             .padding()
                             .background(Color.purple)
                             .foregroundColor(.white)
                             .clipShape(.rect(cornerRadius: 15))
-
+                        
                         Text("Glowing Text")
                             .padding()
                             .background(Color.purple)
                             .foregroundColor(.white)
-                            .glow(example3GlowIntensity)
-                            .clipShape(.rect(cornerRadius: 15))
+                            .glow(example3GlowIntensity, .rect(cornerRadius: 15))
                     }
-
+                    
                     Slider(value: $example3GlowIntensity, in: 0...1, step: 0.1)
                         .padding(.horizontal, 15)
                 }
