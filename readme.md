@@ -72,9 +72,7 @@ import GlowGetter
 
 struct ContentView: View {
     var body: some View {
-        Image("example")
-            .resizable()
-            .scaledToFit()
+        Color.orange
             .glow(0.8)
     }
 }
@@ -90,9 +88,8 @@ import GlowGetter
 
 struct CircularGlowContentView: View {
     var body: some View {
-        Image("example")
-            .resizable()
-            .scaledToFit()
+        Color.orange
+            .clipShape(Circle())
             .glow(0.8, Circle())
     }
 }
@@ -106,9 +103,8 @@ import GlowGetter
 
 struct RoundedGlowContentView: View {
     var body: some View {
-        Image("example")
-            .resizable()
-            .scaledToFit()
+        Color.orange
+            .clipShape(.rect(cornerRadius: 20))
             .glow(0.8, .rect(cornerRadius: 20))
     }
 }
