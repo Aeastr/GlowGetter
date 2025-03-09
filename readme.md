@@ -53,14 +53,18 @@ The current implementation of GlowGetter is experimental. We acknowledge that th
 - **GlowRenderView**  
   This view is responsible for setting up a Metal-rendered glow overlay. It is embedded within a SwiftUI wrapper to make the effect easily composable.
 
-- **SwiftUI Modifier (`.glow(_:)`)**  
-  The single modifier that overlays your view with a glow effect. The intensity of the glow can be adjusted with a simple parameter.
+- **SwiftUI Modifier (`.glow(_:_:)`)**  
+  A single modifier overlays your view with a glow effect. The intensity of the glow can be adjusted with the first parameter, and you can optionally provide a shape to clip the glow.
 
 ---
 
 ## **Basic Usage**
 
-The beauty of GlowGetter lies in its simplicity. Simply import the package and apply the modifier to any SwiftUI view:
+Simply import the package and apply the modifier to any SwiftUI view.
+
+### **Default Glow**
+
+If you just want to apply a glow with a specified intensity, use the modifier with only the intensity parameter:
 
 ```swift
 import SwiftUI
@@ -68,15 +72,43 @@ import GlowGetter
 
 struct ContentView: View {
     var body: some View {
-        Image("example")
-            .resizable()
-            .scaledToFit()
+        Color.orange
             .glow(0.8)
     }
 }
 ```
 
-The above code overlays the image with a glow effect at 80% intensity using a blend mode of `.multiply`.
+### **Glow with Clipping**
+
+You can also control the shape of the glow by using the optional clipping parameter. For instance, to clip the glow to a circular shape, pass a `Circle()` as the second argument:
+
+```swift
+import SwiftUI
+import GlowGetter
+
+struct CircularGlowContentView: View {
+    var body: some View {
+        Color.orange
+            .clipShape(Circle())
+            .glow(0.8, Circle())
+    }
+}
+```
+
+Or if your design calls for a rounded rectangle, simply provide a `.rect`:
+
+```swift
+import SwiftUI
+import GlowGetter
+
+struct RoundedGlowContentView: View {
+    var body: some View {
+        Color.orange
+            .clipShape(.rect(cornerRadius: 20))
+            .glow(0.8, .rect(cornerRadius: 20))
+    }
+}
+```
 
 ---
 
@@ -86,11 +118,14 @@ GlowGetter uses a Metal layer behind the scenes to produce a glow effect by blen
 
 > This implementation serves as a quick way to achieve a glow effect using a SwiftUI overlay. It may not be the most ideal method for high-performance or production-quality rendering. For optimal results in demanding scenarios, a more robust Metal-based rendering pipeline is recommended.
 
+
 ---
 
 ## **Acknowledgments**
 
 Special thanks to [Jordi Bruin](https://github.com/jordibruin) | [X](https://x.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) | [X](https://x.com/BenLumenDigital) for their invaluable insights and assistance in refining the underlying rendering functionality.
+
+This repo adapts some code that was built for [Vivid](http://getvivid.app), which lets you use your MacBook at the maximum brightness.
 
 ---
 
