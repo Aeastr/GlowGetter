@@ -5,9 +5,22 @@
     A lightweight Swift package that makes it a breeze to add a
     customizable glow effect to your SwiftUI views.
     <br>
-    <i>Compatible with iOS 13.0 and later</i>
+    <i>Compatible with iOS 15.0 and later</i>
   </p>
 </div>
+
+<div align="center">
+  <a href="https://swift.org">
+    <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift Version">
+  </a>
+  <a href="https://www.apple.com/ios/">
+    <img src="https://img.shields.io/badge/iOS-15%2B-blue.svg" alt="iOS">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
+  </a>
+</div>
+
 
 ---
 
