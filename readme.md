@@ -138,7 +138,7 @@ GlowGetter uses a Metal layer behind the scenes to produce a glow effect by blen
 
 Special thanks to [Jordi Bruin](https://github.com/jordibruin) | [X](https://x.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) | [X](https://x.com/BenLumenDigital) for their invaluable insights and assistance in refining the underlying rendering functionality.
 
-This repo adapts some code that was built for [Vivid](http://getvivid.app), which lets you use your MacBook at the maximum brightness.
+This repo adapts some code that was built for [Vivid](https://www.getvivid.app), which lets you use your MacBook at the maximum brightness.
 
 ---
 
