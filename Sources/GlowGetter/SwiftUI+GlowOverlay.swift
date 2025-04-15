@@ -21,6 +21,7 @@ public extension View {
         let glowView = GlowRenderView()
             .blendMode(.multiply)
             .opacity(intensity)
+            .allowsHitTesting(false)
 
         return self.overlay(content: {
             if let clipShape = clipShape {
