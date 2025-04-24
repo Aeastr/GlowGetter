@@ -140,9 +140,8 @@ struct ContentView: View {
 
 ## **Acknowledgments**
 
-This project benefited from the insights, code, or inspiration provided by the following individuals or projects:
+Special thanks to [@sebjvidal](https://github.com/sebjvidal) for providing the code snippet that helped in understanding and implementing the direct usage of the `ca-filter` private API.
 
-Special thanks to the broader Swift and iOS development communities for sharing knowledge and pushing boundaries.
 
 ---
 
