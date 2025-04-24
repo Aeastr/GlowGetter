@@ -50,7 +50,7 @@ public extension View {
 public struct GlowGetterExampleView: View {
     @State private var example1GlowIntensity = 0.4
     @State private var example2GlowIntensity = 0.6
-    @State private var example3GlowIntensity = 0.8
+    @State private var example3GlowIntensity = 0.0
     
     public init() {}
     
@@ -83,7 +83,7 @@ public struct GlowGetterExampleView: View {
                     }
                     .frame(height: 80)
                     
-                    Slider(value: $example1GlowIntensity, in: 0...1, step: 0.1)
+                    Slider(value: $example1GlowIntensity, in: 0...5, step: 0.1)
                         .padding(.horizontal, 15)
                 }
                 .padding(.vertical, 8)
@@ -103,7 +103,7 @@ public struct GlowGetterExampleView: View {
                     }
                     .frame(height: 80)
                     
-                    Slider(value: $example2GlowIntensity, in: 0...1, step: 0.1)
+                    Slider(value: $example2GlowIntensity, in: 0...5, step: 0.1)
                         .padding(.horizontal, 15)
                 }
                 .padding(.vertical, 8)
@@ -127,7 +127,7 @@ public struct GlowGetterExampleView: View {
                             .glow(example3GlowIntensity)
                     }
                     
-                    Slider(value: $example3GlowIntensity, in: 0...1, step: 0.1)
+                    Slider(value: $example3GlowIntensity, in: 0...5, step: 0.1)
                         .padding(.horizontal, 15)
                 }
                 .padding(.vertical, 8)
