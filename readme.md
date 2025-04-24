@@ -2,7 +2,7 @@
   <img width="300" height="300" src="/assets/icon.png" alt="GlowGetter Logo">
   <h1><b>GlowGetter</b></h1>
   <p>
-    An experimental Swift package for adding an HDR-like glow effect
+    An experimental Swift package for adding an HDR glow effect
     to SwiftUI views using private Core Animation filters.
     <br>
     <i>Compatible with iOS 15.0+</i>
@@ -26,7 +26,7 @@
 
 ## **Overview: Experimental HDR Glow via Private `CAFilter`**
 
-This package provides a SwiftUI modifier (`.glow`) that applies an HDR-like glow effect by leveraging a **private** Core Animation filter (`CAFilter(type: "edrGainMultiply")`).
+This package provides a SwiftUI modifier (`.glow`) that applies an HDR glow effect by leveraging a **private** Core Animation filter (`CAFilter(type: "edrGainMultiply")`).
 
 > ## ⚠️ **Warning: Private API Usage & Risks** ⚠️
 >
