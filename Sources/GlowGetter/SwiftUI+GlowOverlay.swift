@@ -23,8 +23,8 @@ public extension View {
     ///   **Use at your own risk.**
     ///
     /// - Parameter intensity: A multiplier applied to the view's perceived brightness.
-    ///   Values greater than `1.0` increase brightness, pushing colors into the
-    ///   Extended Dynamic Range (EDR) on compatible displays. Defaults to `1.0` (no change).
+    ///   Values greater than `0.0` increase brightness, pushing colors into the
+    ///   Extended Dynamic Range (EDR) on compatible displays. Defaults to `0.0` (no change).
     ///   Reasonable EDR values might range from `2.0` to `10.0` or higher, depending
     ///   on the desired effect and display capabilities.
     ///
@@ -36,7 +36,7 @@ public extension View {
     ///     .foregroundStyle(.white)
     ///     .glow(intensity: 2.0) // Apply a strong glow
     /// ```
-    func glow(_ intensity: Double = 1.0) -> some View {
+    func glow(_ intensity: Double = 0.0) -> some View {
         FilteredViewRepresentable(content: self, intensity: intensity)
     }
 }
@@ -48,9 +48,9 @@ public extension View {
 }
 
 public struct GlowGetterExampleView: View {
-    @State private var example1GlowIntensity = 0.4
-    @State private var example2GlowIntensity = 0.6
-    @State private var example3GlowIntensity = 0.0
+    @State private var example1GlowIntensity = 0.0
+    @State private var example2GlowIntensity = 2.0
+    @State private var example3GlowIntensity = 4.0
     
     public init() {}
     
