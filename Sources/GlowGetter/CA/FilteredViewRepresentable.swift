@@ -53,37 +53,43 @@ internal struct FilteredViewRepresentable<Content: View>: UIViewRepresentable {
         return containerView
     }
     
+
     func updateUIView(_ uiView: UIView, context: Context) {
+
+        // Update the SwiftUI content first
         context.coordinator.hostingController?.rootView = content
-        
-        // Get the actual view that has the filter applied (from the coordinator)
+
+        // Get the hosting view
         guard let hostingView = context.coordinator.hostingController?.view else {
-            return // Exit if the hosting view isn't available
+            // print("Error: hostingView is nil")
+            return
         }
-        
-        // Access the filter on the HOSTING VIEW's layer
-        if let inputScaleKey = Obfuscated.inputScaleKey,
-           let edrFilter = hostingView.layer.filters?.first as? NSObject
-        {
-            // Check if the intensity actually changed to avoid redundant work
-            let currentValue = edrFilter.value(forKey: inputScaleKey) as? Double
-            if currentValue != intensity {
-                // Update the filter's value on the correct filter instance
-                edrFilter.setValue(intensity, forKey: inputScaleKey)
-                
-                // IMPORTANT: Tell the hosting view's layer it needs to redraw to reflect the updated filter parameter.
-                hostingView.setNeedsDisplay()
+
+        // remove existing filter(s) first, check if the current scale is actually different before doing work
+        let currentFilterScale = (hostingView.layer.filters?.first as? NSObject)?
+            .value(forKey: Obfuscated.inputScaleKey ?? "") as? Double
+
+        if currentFilterScale != intensity {
+            // print("Intensity changed (\(currentFilterScale ?? -1) -> \(intensity)). Re-creating filter.")
+            hostingView.layer.filters = nil // Remove existing
+
+            // re-create and add the filter with the current intensity
+            if let edrFilterTypeName = Obfuscated.edrFilterTypeName,
+               let inputScaleKey = Obfuscated.inputScaleKey,
+               let enabledKey = Obfuscated.enabledKey,
+               let newFilter = CAFilterObfuscated(type: edrFilterTypeName)
+            {
+                // print("Creating new filter with intensity: \(intensity)")
+                newFilter.setValue(intensity, forKey: inputScaleKey)
+                newFilter.setValue(true, forKey: enabledKey)
+                hostingView.layer.filters = [newFilter] // Assign the new filter array
+                // print("New filter assigned: \(hostingView.layer.filters ?? [])")
+            } else {
+                // print("Error: Could not create new filter instance or keys missing.")
             }
+        } else {
+            // print("Intensity hasn't changed (\(intensity)), skipping filter re-creation.")
         }
-        
-        // Use the obfuscated key for updating
-        if let inputScaleKey = Obfuscated.inputScaleKey,
-           let edrFilter = uiView.layer.filters?.first as? NSObject
-        {
-            edrFilter.setValue(intensity, forKey: inputScaleKey)
-        }
-        
-        uiView.setNeedsLayout()
     }
     
     func makeCoordinator() -> Coordinator {
