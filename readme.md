@@ -26,6 +26,21 @@
 
 ## **Overview**
 
+### Direct `ca-filter` Integration
+
+This branch offers an implementation method that integrates directly with the private `ca-filter` Core Animation API. This approach is offered as an alternative path for those who require the specific behavior or performance characteristics of the direct `ca-filter` API, in contrast to implementations that rely solely on public APIs.
+
+**Important Considerations & Risks:**
+
+Please be aware that this package's core functionality relies on a private Apple API (`ca-filter`). This means:
+
+*   There is no guarantee of stability across macOS/iOS updates.
+*   Apple does not officially support the use of this API.
+
+Developers choosing this package should be fully aware of these risks and prepared for potential maintenance challenges due to API changes. Consider this a more direct, but potentially less stable, method compared to public API alternatives.
+
+---
+
 GlowGetter provides an easy-to-use SwiftUI modifier that overlays a view with a Metal-powered glow effect. With just one simple modifier, you can enhance your views with a subtle or pronounced glow to match your design needs. Under the hood, the package leverages a custom view (named `GlowRenderView`) that encapsulates Metal's powerful rendering functionalities.
 
 ### **Examples**
