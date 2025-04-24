@@ -136,6 +136,20 @@ GlowGetter uses a Metal layer behind the scenes to produce a glow effect by blen
 
 ---
 
+## **License**
+
+GlowGetter is available under the MIT license. See the [LICENSE](LICENSE) file for more information.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. Before you begin, take a moment to review the [Contributing Guide](CONTRIBUTING.md) for details on issue reporting, coding standards, and the PR process.
+
+## Support
+
+If you like this project, please consider giving it a ⭐️
+
+---
+
 ## **Acknowledgments**
 
 Special thanks to [Jordi Bruin](https://github.com/jordibruin) | [X](https://x.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) | [X](https://x.com/BenLumenDigital) for their invaluable insights and assistance in refining the underlying rendering functionality.
@@ -144,6 +158,13 @@ This repo adapts some code that was built for [Vivid](https://www.getvivid.app),
 
 ---
 
-## **License**
+## Where to find me:  
+- here, obviously.  
+- [Twitter](https://x.com/AetherAurelia)  
+- [Threads](https://www.threads.net/@aetheraurelia)  
+- [Bluesky](https://bsky.app/profile/aethers.world)  
+- [LinkedIn](https://www.linkedin.com/in/willjones24)
 
-GlowGetter is available under the MIT license. See the [LICENSE](LICENSE) file for more information.
+---
+
+<p align="center">Built with 🍏🌟🖥️ by Aether</p>
