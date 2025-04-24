@@ -2,10 +2,10 @@
   <img width="300" height="300" src="/assets/icon.png" alt="GlowGetter Logo">
   <h1><b>GlowGetter</b></h1>
   <p>
-    A lightweight Swift package that makes it a breeze to add a
-    customizable glow effect to your SwiftUI views.
+    An experimental Swift package for adding an HDR-like glow effect
+    to SwiftUI views using private Core Animation filters.
     <br>
-    <i>Compatible with iOS 15.0 and later</i>
+    <i>Compatible with iOS 15.0+</i>
   </p>
 </div>
 
@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift Version">
   </a>
   <a href="https://www.apple.com/ios/">
-    <img src="https://img.shields.io/badge/iOS-15%2B-blue.svg" alt="iOS">
+    <img src="https://img.shields.io/badge/Platform-iOS%2015%2B%20%7C%20-blue.svg" alt="Platform">
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
@@ -24,44 +24,43 @@
 
 ---
 
-## **Overview**
+## **Overview: Experimental HDR Glow via Private `CAFilter`**
 
-### Direct `ca-filter` Integration
+This package provides a SwiftUI modifier (`.glow`) that applies an HDR-like glow effect by leveraging a **private** Core Animation filter (`CAFilter(type: "edrGainMultiply")`).
 
-This branch offers an implementation method that integrates directly with the private `ca-filter` Core Animation API. This approach is offered as an alternative path for those who require the specific behavior or performance characteristics of the direct `ca-filter` API, in contrast to implementations that rely solely on public APIs.
+> ## ⚠️ **Warning: Private API Usage & Risks** ⚠️
+>
+> *   **App Store Rejection:** Apps using private APIs like `CAFilter` **may be rejected** during the App Store review process. This package is may not be suitable for apps intended for App Store distribution.
+> *   **API Instability:** Private APIs are undocumented, unsupported, and can change or be removed by Apple without warning in any OS update, potentially breaking your code.
+> *   **Obfuscation is Not a Guarantee:** While the private API strings within this package are obfuscated (using Base64 encoding) to hinder basic static analysis, this **does not prevent detection** by Apple's review process or guarantee future compatibility.
+>
+> **Developers choosing this package must understand and accept these significant risks.** If you need a production-ready, App Store-safe solution, explore alternatives using public APIs in the main branch (like Metal shaders).
 
-**Important Considerations & Risks:**
-
-Please be aware that this package's core functionality relies on a private Apple API (`ca-filter`). This means:
-
-*   There is no guarantee of stability across macOS/iOS updates.
-*   Apple does not officially support the use of this API.
-
-Developers choosing this package should be fully aware of these risks and prepared for potential maintenance challenges due to API changes. Consider this a more direct, but potentially less stable, method compared to public API alternatives.
+This implementation directly manipulates the layer's rendering via the filter, aiming to increase the perceived brightness of the view's content, pushing colors into the Extended Dynamic Range (EDR) on compatible displays.
 
 ---
 
-GlowGetter provides an easy-to-use SwiftUI modifier that overlays a view with a Metal-powered glow effect. With just one simple modifier, you can enhance your views with a subtle or pronounced glow to match your design needs. Under the hood, the package leverages a custom view (named `GlowRenderView`) that encapsulates Metal's powerful rendering functionalities.
+### **Example Visual (Conceptual)**
 
-### **Examples**
+*(Note: Static images cannot fully represent HDR effects. Test on a compatible device.)*
 
-Here are some examples of GlowGetter in action:
+Imagine applying the modifier to a bright element:
 
-<div align="center">
-<table>
-  <tr>
-    <td align="center">
-      <img src="assets/example1.jpg" alt="Example 1" width="300">
-    </td>
-    <td align="center">
-      <img src="assets/example2.jpg" alt="Example 2" width="300">
-    </td>
-  </tr>
-</table>
-</div>
+```swift
+struct GlowExample: View {
+    var body: some View {
+        Image(systemName: "sun.max.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 100, height: 100)
+            .foregroundStyle(.yellow) // A bright base color works best
+            // Apply the glow with significant intensity for HDR effect
+            .glow(5.0)
+    }
+}
+```
 
-**Please Note:**  
-The current implementation of GlowGetter is experimental. We acknowledge that the rendering method isn’t perfect yet, and improvements are planned for possible future releases.
+On an HDR display, the yellow sun icon would appear significantly brighter than standard UI elements, creating a distinct "glow."
 
 ---
 
@@ -69,91 +68,81 @@ The current implementation of GlowGetter is experimental. We acknowledge that th
 
 ### Swift Package Manager
 
-1. In Xcode, navigate to **File > Add Packages...**
-2. Enter the repository URL:  
-   `https://github.com/Aeastr/GlowGetter`
-3. Follow the prompts to add the package to your project.
+1.  In Xcode, navigate to **File > Add Packages...**
+2.  Enter the repository URL:
+    `https://github.com/Aeastr/GlowGetter`
+3.  Select the desired branch/version and add the package.
 
 ---
 
 ## **Key Components**
 
-- **GlowRenderView**  
-  This view is responsible for setting up a Metal-rendered glow overlay. It is embedded within a SwiftUI wrapper to make the effect easily composable.
-
-- **SwiftUI Modifier (`.glow(_:_:)`)**  
-  A single modifier overlays your view with a glow effect. The intensity of the glow can be adjusted with the first parameter, and you can optionally provide a shape to clip the glow.
+*   **`.glow(_ intensity:)` (Public Modifier):**
+    The primary SwiftUI `View` extension modifier used to apply the effect. Takes an `intensity` parameter to control the brightness boost.
+*   **`FilteredViewRepresentable` (Internal):**
+    A private `UIViewRepresentable` that wraps the target SwiftUI view, hosts it in a `UIHostingController`, and applies the `CAFilter` to the underlying `UIView`'s layer.
+*   **Obfuscation Helpers (Internal):**
+    Internal functions and structures used to decode Base64 strings at runtime, avoiding direct embedding of private API string literals in the source code.
 
 ---
 
 ## **Basic Usage**
 
-Simply import the package and apply the modifier to any SwiftUI view.
-
-### **Default Glow**
-
-If you just want to apply a glow with a specified intensity, use the modifier with only the intensity parameter:
+Import the package and apply the `.glowWithObfuscatedFilter` modifier to your SwiftUI view.
 
 ```swift
 import SwiftUI
-import GlowGetter
+import GlowGetter // Make sure to import the package
 
 struct ContentView: View {
+    @State private var glowIntensity: Double = 4.0
+
     var body: some View {
-        Color.orange
-            .glow(0.8)
+        VStack {
+            Text("Standard Text")
+
+            Circle()
+                .fill(.white)
+                .frame(width: 100, height: 100)
+                // Apply the glow effect
+                .glow(glowIntensity)
+
+            Slider(value: $glowIntensity, in: 1.0...10.0) {
+                Text("Glow Intensity")
+            }
+            .padding()
+        }
+        // Ensure the environment supports HDR display if possible
+        // .environment(\.colorScheme, .dark) // Often helps
     }
 }
 ```
 
-### **Glow with Clipping**
+**Parameters:**
 
-You can also control the shape of the glow by using the optional clipping parameter. For instance, to clip the glow to a circular shape, pass a `Circle()` as the second argument:
-
-```swift
-import SwiftUI
-import GlowGetter
-
-struct CircularGlowContentView: View {
-    var body: some View {
-        Color.orange
-            .clipShape(Circle())
-            .glow(0.8, Circle())
-    }
-}
-```
-
-Or if your design calls for a rounded rectangle, simply provide a `.rect`:
-
-```swift
-import SwiftUI
-import GlowGetter
-
-struct RoundedGlowContentView: View {
-    var body: some View {
-        Color.orange
-            .clipShape(.rect(cornerRadius: 20))
-            .glow(0.8, .rect(cornerRadius: 20))
-    }
-}
-```
+*   `_ intensity`: `Double` (Default: `1.0`). A multiplier for the view's brightness. Values greater than `1.0` push the view into the EDR range on compatible displays. Experiment with values like `2.0` to `10.0` or higher.
 
 ---
 
 ## **How It Works**
 
-GlowGetter uses a Metal layer behind the scenes to produce a glow effect by blending a rendered overlay with the underlying view content. The overlay is applied using a custom SwiftUI view (`GlowRenderView`), which is wrapped up inside a neat `.glow(_:)` modifier. This allows you to add or remove the effect in a declarative manner.
+1.  The `.glow` modifier wraps your SwiftUI `View` content within the internal `FilteredViewRepresentable`.
+2.  `FilteredViewRepresentable` creates a `UIHostingController` to render the SwiftUI `View` into a standard `UIView`.
+3.  It retrieves the necessary private API strings (like `"CAFilter"`, `"filterWithType:"`, `"edrGainMultiply"`, `"inputScale"`) by decoding embedded Base64 strings at runtime.
+4.  Using these decoded strings, it dynamically creates an instance of the private `CAFilter` configured for the `edrGainMultiply` type.
+5.  This filter is then added to the `filters` array of the `UIView`'s `layer`.
+6.  The `intensity` parameter provided to the modifier is set as the `inputScale` value on the `CAFilter`, controlling the strength of the brightness multiplication effect.
+7.  The `UIViewRepresentable` manages the view lifecycle and updates the filter's intensity when the state changes.
 
-> This implementation serves as a quick way to achieve a glow effect using a SwiftUI overlay. It may not be the most ideal method for high-performance or production-quality rendering. For optimal results in demanding scenarios, a more robust Metal-based rendering pipeline is recommended.
-
+> This mechanism directly hooks into Core Animation's rendering pipeline via unsupported means. It offers a potentially simpler way to achieve an EDR effect compared to complex custom Metal shaders but comes with significant risks and limitations.
 
 ---
 
 ## **Acknowledgments**
 
-Special thanks to [Jordi Bruin](https://github.com/jordibruin) | [X](https://x.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) | [X](https://x.com/BenLumenDigital) for their invaluable insights and assistance in refining the underlying rendering functionality.
+This project benefited from the insights, code, or inspiration provided by the following individuals or projects:
 
-This repo adapts some code that was built for [Vivid](https://www.getvivid.app), which lets you use your MacBook at the maximum brightness.
+Special thanks to the broader Swift and iOS development communities for sharing knowledge and pushing boundaries.
 
 ---
 
