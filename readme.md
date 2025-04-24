@@ -28,6 +28,8 @@
 
 GlowGetter provides an easy-to-use SwiftUI modifier that overlays a view with a Metal-powered glow effect. With just one simple modifier, you can enhance your views with a subtle or pronounced glow to match your design needs. Under the hood, the package leverages a custom view (named `GlowRenderView`) that encapsulates Metal's powerful rendering functionalities.
 
+> GlowGetter also provides a [ca-filter-alt](https://github.com/Aeastr/GlowGetter/tree/ca-filter-alt branch) that doesn't rely on an overlay, but has other tradeoffs.
+
 ### **Examples**
 
 Here are some examples of GlowGetter in action:
