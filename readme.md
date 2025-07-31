@@ -1,11 +1,9 @@
 <div align="center">
-  <img width="300" height="300" src="/assets/icon.png" alt="GlowGetter Logo">
+  <img width="270" height="270" src="/assets/icon.png" alt="GlowGetter Logo">
   <h1><b>GlowGetter</b></h1>
   <p>
     A lightweight Swift package that makes it a breeze to add a
     customizable glow effect to your SwiftUI views.
-    <br>
-    <i>Compatible with iOS 15.0 and later</i>
   </p>
 </div>
 
