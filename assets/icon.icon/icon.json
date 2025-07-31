@@ -1,0 +1,113 @@
+{
+  "fill" : {
+    "automatic-gradient" : "display-p3:0.87451,0.58447,0.00392,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "LeftBlur.png",
+          "name" : "LeftBlur1",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -257,
+              0
+            ]
+          }
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "glass" : false,
+          "image-name" : "LeftBlur.png",
+          "name" : "LeftBlur2",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -257,
+              0
+            ]
+          }
+        }
+      ],
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          128.5,
+          145
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "image-name" : "LeftHalf.svg",
+          "name" : "LeftHalf",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -257,
+              0
+            ]
+          }
+        },
+        {
+          "fill" : {
+            "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+          },
+          "image-name" : "RightHalf.svg",
+          "name" : "RightHalf",
+          "opacity" : 0.88,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "lighting" : "combined",
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          128.5,
+          145
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
