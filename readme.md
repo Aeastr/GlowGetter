@@ -1,168 +1,92 @@
 <div align="center">
-  <img width="270" height="270" src="/assets/icon.png" alt="GlowGetter Logo">
+  <img width="128" height="128" src="/assets/icon.png" alt="GlowGetter Icon">
   <h1><b>GlowGetter</b></h1>
   <p>
-    A lightweight Swift package that makes it a breeze to add a
-    customizable glow effect to your SwiftUI views.
+    Add customizable Metal-powered glow effects to your SwiftUI views.
   </p>
 </div>
 
+<p align="center">
+  <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-6.0+-F05138?logo=swift&logoColor=white" alt="Swift 6.0+"></a>
+  <a href="https://developer.apple.com"><img src="https://img.shields.io/badge/iOS-15+-000000?logo=apple" alt="iOS 15+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/Status-Experimental-orange.svg" alt="Experimental">
+</p>
+
+> [!NOTE]
+> This implementation is experimental. A [ca-filter-alt branch](https://github.com/Aeastr/GlowGetter/tree/ca-filter-alt) exists with an alternative approach that doesn't rely on an overlay.
+
 <div align="center">
-  <a href="https://swift.org">
-    <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift Version">
-  </a>
-  <a href="https://www.apple.com/ios/">
-    <img src="https://img.shields.io/badge/iOS-15%2B-blue.svg" alt="iOS">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
-  </a>
+  <img src="assets/example1.jpg" alt="Example 1" width="280">
+  <img src="assets/example2.jpg" alt="Example 2" width="280">
 </div>
 
 
----
+## Overview
 
-## **Overview**
+- Single `.glow()` modifier for any SwiftUI view
+- Adjustable intensity
+- Optional shape clipping (Circle, RoundedRectangle, etc.)
+- Metal-rendered overlay for the glow effect
 
-GlowGetter provides an easy-to-use SwiftUI modifier that overlays a view with a Metal-powered glow effect. With just one simple modifier, you can enhance your views with a subtle or pronounced glow to match your design needs. Under the hood, the package leverages a custom view (named `GlowRenderView`) that encapsulates Metal's powerful rendering functionalities.
 
-> GlowGetter also provides a [ca-filter-alt branch](https://github.com/Aeastr/GlowGetter/tree/ca-filter-alt) that doesn't rely on an overlay, but has other tradeoffs.
-
-### **Examples**
-
-Here are some examples of GlowGetter in action:
-
-<div align="center">
-<table>
-  <tr>
-    <td align="center">
-      <img src="assets/example1.jpg" alt="Example 1" width="300">
-    </td>
-    <td align="center">
-      <img src="assets/example2.jpg" alt="Example 2" width="300">
-    </td>
-  </tr>
-</table>
-</div>
-
-**Please Note:**  
-The current implementation of GlowGetter is experimental. We acknowledge that the rendering method isn’t perfect yet, and improvements are planned for possible future releases.
-
----
-
-## **Installation**
-
-### Swift Package Manager
-
-1. In Xcode, navigate to **File > Add Packages...**
-2. Enter the repository URL:  
-   `https://github.com/Aeastr/GlowGetter`
-3. Follow the prompts to add the package to your project.
-
----
-
-## **Key Components**
-
-- **GlowRenderView**  
-  This view is responsible for setting up a Metal-rendered glow overlay. It is embedded within a SwiftUI wrapper to make the effect easily composable.
-
-- **SwiftUI Modifier (`.glow(_:_:)`)**  
-  A single modifier overlays your view with a glow effect. The intensity of the glow can be adjusted with the first parameter, and you can optionally provide a shape to clip the glow.
-
----
-
-## **Basic Usage**
-
-Simply import the package and apply the modifier to any SwiftUI view.
-
-### **Default Glow**
-
-If you just want to apply a glow with a specified intensity, use the modifier with only the intensity parameter:
+## Installation
 
 ```swift
-import SwiftUI
-import GlowGetter
-
-struct ContentView: View {
-    var body: some View {
-        Color.orange
-            .glow(0.8)
-    }
-}
+dependencies: [
+    .package(url: "https://github.com/Aeastr/GlowGetter.git", from: "1.0.0")
+]
 ```
-
-### **Glow with Clipping**
-
-You can also control the shape of the glow by using the optional clipping parameter. For instance, to clip the glow to a circular shape, pass a `Circle()` as the second argument:
 
 ```swift
-import SwiftUI
 import GlowGetter
-
-struct CircularGlowContentView: View {
-    var body: some View {
-        Color.orange
-            .clipShape(Circle())
-            .glow(0.8, Circle())
-    }
-}
 ```
 
-Or if your design calls for a rounded rectangle, simply provide a `.rect`:
+Or in Xcode: **File > Add Packages…** and enter `https://github.com/Aeastr/GlowGetter`
+
+
+## Usage
+
+### Basic Glow
 
 ```swift
-import SwiftUI
-import GlowGetter
-
-struct RoundedGlowContentView: View {
-    var body: some View {
-        Color.orange
-            .clipShape(.rect(cornerRadius: 20))
-            .glow(0.8, .rect(cornerRadius: 20))
-    }
-}
+Color.orange
+    .glow(0.8)
 ```
 
----
+### With Shape Clipping
 
-## **How It Works**
+Clip the glow to match your view's shape:
 
-GlowGetter uses a Metal layer behind the scenes to produce a glow effect by blending a rendered overlay with the underlying view content. The overlay is applied using a custom SwiftUI view (`GlowRenderView`), which is wrapped up inside a neat `.glow(_:)` modifier. This allows you to add or remove the effect in a declarative manner.
+```swift
+// Circle
+Color.orange
+    .clipShape(Circle())
+    .glow(0.8, Circle())
 
-> This implementation serves as a quick way to achieve a glow effect using a SwiftUI overlay. It may not be the most ideal method for high-performance or production-quality rendering. For optimal results in demanding scenarios, a more robust Metal-based rendering pipeline is recommended.
+// Rounded rectangle
+Color.orange
+    .clipShape(.rect(cornerRadius: 20))
+    .glow(0.8, .rect(cornerRadius: 20))
+```
 
 
----
+## How It Works
 
-## **License**
+GlowGetter uses a Metal layer to produce the glow effect by blending a rendered overlay with the underlying view content. The overlay is applied via `GlowRenderView`, wrapped in the `.glow()` modifier for declarative use.
 
-GlowGetter is available under the MIT license. See the [LICENSE](LICENSE) file for more information.
+This serves as a quick way to achieve glow effects. For high-performance or production scenarios, a more robust Metal pipeline may be needed.
+
+### Acknowledgments
+
+Thanks to [Jordi Bruin](https://github.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) for their insights on the rendering functionality. This repo adapts code built for [Vivid](https://www.getvivid.app).
+
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. Before you begin, take a moment to review the [Contributing Guide](CONTRIBUTING.md) for details on issue reporting, coding standards, and the PR process.
+Contributions welcome. See the [Contributing Guide](CONTRIBUTING.md) for details.
 
-## Support
 
-If you like this project, please consider giving it a ⭐️
+## License
 
----
-
-## **Acknowledgments**
-
-Special thanks to [Jordi Bruin](https://github.com/jordibruin) | [X](https://x.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) | [X](https://x.com/BenLumenDigital) for their invaluable insights and assistance in refining the underlying rendering functionality.
-
-This repo adapts some code that was built for [Vivid](https://www.getvivid.app), which lets you use your MacBook at the maximum brightness.
-
----
-
-## Where to find me:  
-- here, obviously.  
-- [Twitter](https://x.com/AetherAurelia)  
-- [Threads](https://www.threads.net/@aetheraurelia)  
-- [Bluesky](https://bsky.app/profile/aethers.world)  
-- [LinkedIn](https://www.linkedin.com/in/willjones24)
-
----
-
-<p align="center">Built with 🍏🌟🖥️ by Aether</p>
+MIT. See [LICENSE](LICENSE) for details.
