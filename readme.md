@@ -2,7 +2,7 @@
   <img width="128" height="128" src="/assets/icon.png" alt="GlowGetter Icon">
   <h1><b>GlowGetter</b></h1>
   <p>
-    Add customizable Metal-powered glow effects to your SwiftUI views.
+    Add customizable glow effects to your SwiftUI views.
   </p>
 </div>
 
@@ -13,9 +13,6 @@
   <img src="https://img.shields.io/badge/Status-Experimental-orange.svg" alt="Experimental">
 </p>
 
-> [!NOTE]
-> This implementation is experimental. A [ca-filter-alt branch](https://github.com/Aeastr/GlowGetter/tree/ca-filter-alt) exists with an alternative approach that doesn't rely on an overlay.
-
 <div align="center">
   <img src="assets/example1.jpg" alt="Example 1" width="280">
   <img src="assets/example2.jpg" alt="Example 2" width="280">
@@ -24,62 +21,89 @@
 
 ## Overview
 
-- Single `.glow()` modifier for any SwiftUI view
-- Adjustable intensity
-- Optional shape clipping (Circle, RoundedRectangle, etc.)
-- Metal-rendered overlay for the glow effect
+GlowGetter provides two implementations for adding glow effects:
+
+| Target | API | App Store Safe | Method |
+|--------|-----|----------------|--------|
+| `GlowGetter` | Public | Yes | Metal-rendered overlay |
+| `GlowGetterPrivate` | Private | No | CAFilter EDR (true HDR brightness) |
 
 
 ## Installation
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Aeastr/GlowGetter.git", from: "1.0.0")
+    .package(url: "https://github.com/Aeastr/GlowGetter.git", from: "2.0.0")
 ]
 ```
 
-```swift
-import GlowGetter
-```
+Add the target you need:
 
-Or in Xcode: **File > Add Packages…** and enter `https://github.com/Aeastr/GlowGetter`
+```swift
+.target(
+    name: "YourTarget",
+    dependencies: [
+        .product(name: "GlowGetter", package: "GlowGetter"),
+        // OR
+        .product(name: "GlowGetterPrivate", package: "GlowGetter")
+    ]
+)
+```
 
 
 ## Usage
 
-### Basic Glow
+### GlowGetter (Public API)
+
+Metal-powered overlay effect. Safe for App Store.
 
 ```swift
+import GlowGetter
+
+// Basic glow
 Color.orange
     .glow(0.8)
-```
 
-### With Shape Clipping
-
-Clip the glow to match your view's shape:
-
-```swift
-// Circle
+// With shape clipping
 Color.orange
     .clipShape(Circle())
     .glow(0.8, Circle())
-
-// Rounded rectangle
-Color.orange
-    .clipShape(.rect(cornerRadius: 20))
-    .glow(0.8, .rect(cornerRadius: 20))
 ```
+
+### GlowGetterPrivate (Private API)
+
+> [!WARNING]
+> Uses private `CAFilter` APIs. May be rejected by App Store review, may break in future iOS updates. We are not responsible for any consequences of using this in your applications. **Use at your own risk.**
+
+True HDR brightness using the `edrGainMultiply` filter. Only visible on HDR-capable displays.
+
+```swift
+import GlowGetterPrivate
+
+// EDR glow (values typically 2.0-10.0)
+Color.orange
+    .glowEDR(4.0)
+```
+
+To preview: Use **My Mac | Mac Catalyst** if your Mac supports HDR—simulators won't show the effect.
 
 
 ## How It Works
 
-GlowGetter uses a Metal layer to produce the glow effect by blending a rendered overlay with the underlying view content. The overlay is applied via `GlowRenderView`, wrapped in the `.glow()` modifier for declarative use.
+### GlowGetter (Public)
 
-This serves as a quick way to achieve glow effects. For high-performance or production scenarios, a more robust Metal pipeline may be needed.
+Uses a Metal layer to render a glow overlay blended with the underlying view. The overlay is applied via `GlowRenderView` wrapped in the `.glow()` modifier.
 
-### Acknowledgments
+### GlowGetterPrivate (Private)
 
-Thanks to [Jordi Bruin](https://github.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) for their insights on the rendering functionality. This repo adapts code built for [Vivid](https://www.getvivid.app).
+Wraps the view in a `UIViewRepresentable` and applies CAFilter's `edrGainMultiply` to the layer. Private API strings are obfuscated at compile-time using [Obfuscate](https://github.com/Aeastr/Obfuscate).
+
+
+## Acknowledgments
+
+**GlowGetter (Public):** Thanks to [Jordi Bruin](https://github.com/jordibruin) and [Ben Harraway](https://github.com/BenLumenDigital) for their insights on the Metal rendering. Adapts code built for [Vivid](https://www.getvivid.app).
+
+**GlowGetterPrivate:** Thanks to [Seb Vidal](https://github.com/sebjvidal) for the CAFilter implementation.
 
 
 ## Contributing
